@@ -56,3 +56,31 @@ item_baseline_predictor <- function(ratings_matrix, users_baseline_vector, globa
 	items_baseline_vector
 
 }
+
+baseline_redictor_for_user <- function(ratings_matrix, users_baseline_vector, items_baseline_vector, user, global_mean) {
+	
+	prediction_vector <- numeric()
+	
+	#fill prediction vector with global mean
+	prediction_vector <- rep(global_mean, ncol(ratings_matrix))
+	
+	#add item offset for all items
+	prediction_vector <- prediction_vector + items_baseline_vector
+	
+	#add user offset	
+	prediction_vector <- prediction_vector + users_baseline_vector[user]
+	
+}
+
+
+#not sure if needed
+
+baseline_predictor_to_files <- function() {	
+	
+	userBase <- userBaselinePredictor()
+	write.csv(userBase, file = "UserBaselines.csv", row.names=TRUE)
+		
+	itemBase <- itemBaselinePredictor(userBase)
+	write.csv(itemBase, file = "ItemBaselines.csv", row.names=TRUE)
+	
+}
