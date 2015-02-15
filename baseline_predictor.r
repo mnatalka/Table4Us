@@ -2,17 +2,18 @@ library("jsonlite")
 
 source("R/create_ratings_matrix.r")
 source("R/user_item_baseline.r")
+#source("R/user_user_cosine_similarity.r")
 
-#ratings <- create_ratings_matrix()
+#create ratings matrix, write it to the file and then red from that file
+create_ratings_matrix()
+ratings <- read.csv(file="outputs/ratings_matrix.csv", row.names=1)
+ratings <- as.matrix(ratings)
 
-#global_mean <- get_global_mean(ratings)
+#calculate global mean
+global_mean <- get_global_mean(ratings)
 
-#users_baseline <- user_baseline_predictor(ratings, global_mean)
+users_baseline <- user_baseline_predictor(ratings, global_mean)
 
-#items_baseline <- item_baseline_predictor(ratings, users_baseline, global_mean)
+items_baseline <- item_baseline_predictor(ratings, users_baseline, global_mean)
 
-user_predict <- baseline_redictor_for_user(ratings, users_baseline, items_baseline, "monken80", global_mean)
-
-#display top 10 choices
-
-head(sort(user_predict, decreasing=TRUE), 10)
+baseline_matrix <- create_baseline_prediction_matrix(ratings, users_baseline, items_baseline, global_mean)

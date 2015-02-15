@@ -21,7 +21,7 @@ colnames(ratings) <- restaurants
     ratings[reviews[i,"UserID"], reviews[i,"BusinessID"]] <- as.numeric(reviews[i,"stars"])
  }
 
-write.csv(ratings, file = "outputs/RatingMatrix.csv", row.names=TRUE)
+write.csv(ratings, file = "outputs/ratings_matrix.csv", row.names=TRUE)
 
 ratings
 

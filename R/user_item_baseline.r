@@ -1,7 +1,6 @@
 get_global_mean <- function(ratings_matrix) {
 
-	global_mean <- mean(as.matrix(ratings_matrix), na.rm = TRUE)
-
+	global_mean <- mean(ratings_matrix, na.rm = TRUE)
 }
 
 user_baseline_predictor <- function(ratings_matrix, global_mean) {
@@ -20,6 +19,7 @@ user_baseline_predictor <- function(ratings_matrix, global_mean) {
 		users_baseline_vector[rownames(ratings_matrix)[i]] <- baseline
 	}
 	
+	write.csv(ratings, file = "outputs/baseline_matrix.csv", row.names=TRUE)
 	users_baseline_vector
 	
 }
@@ -31,7 +31,7 @@ item_baseline_predictor <- function(ratings_matrix, users_baseline_vector, globa
 	names(items_baseline_vector) <- colnames(ratings_matrix)
 	item_offset <- 0
 	
-	for(i in 1:2) {#ncol(ratings_matrix)) {
+	for(i in 1:ncol(ratings_matrix)) {
 	
 		scores <- ratings_matrix[, i]
 		number_rated <- sum(!is.na(scores))
@@ -57,22 +57,35 @@ item_baseline_predictor <- function(ratings_matrix, users_baseline_vector, globa
 
 }
 
-baseline_redictor_for_user <- function(ratings_matrix, users_baseline_vector, items_baseline_vector, user, global_mean) {
+create_baseline_prediction_matrix <- function(ratings_matrix, users_baseline_vector, items_baseline_vector, global_mean) {
 	
-	prediction_vector <- numeric()
+	#prediction_vector <- numeric()
 	
 	#fill prediction vector with global mean
-	prediction_vector <- rep(global_mean, ncol(ratings_matrix))
+	#prediction_vector <- rep(global_mean, ncol(ratings_matrix))
 	
 	#add item offset for all items
-	prediction_vector <- prediction_vector + items_baseline_vector
+	#prediction_vector <- prediction_vector + items_baseline_vector
 	
 	#add user offset	
-	prediction_vector <- prediction_vector + users_baseline_vector[user]
+	#prediction_vector <- prediction_vector + users_baseline_vector[user]
+	
+	#initialise baseline predictor with the global mean
+	baseline_prediction_matrix <- matrix(data = global_mean, nrow = nrow(ratings_matrix),ncol = ncol(ratings_matrix))
+	
+	#add users offsets
+	for( i in 1:nrow(ratings_matrix)) {
+			baseline_prediction_matrix[i,] <- baseline_prediction_matrix[i,] + items_baseline_vector
+	}
+	#add items offsets
+	for(j in 1:ncol(ratings_matrix)) {
+			baseline_prediction_matrix[,j] <- baseline_prediction_matrix[,j] + users_baseline_vector
+	}
+	
+	
+	baseline_prediction_matrix
 	
 }
-
-
 #not sure if needed
 
 baseline_predictor_to_files <- function() {	
