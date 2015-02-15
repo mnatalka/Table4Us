@@ -1,9 +1,14 @@
 #user-user adjusted cosine similarity matrix
 
-ratings_matrix <- ratings
+library(lsa)
+
+ratings_matrix <- read.csv(file="outputs/ratings_matrix.csv", row.names=1)
+ratings_matrix <- as.matrix(ratings_matrix)
+
 small_matrix <- numeric()
 user_names <- vector()
 
+#create matrix of ratings for users that have rated more than 5 restaurants
 for(i in 1:nrow(ratings_matrix)) {
 	scores <- ratings_matrix[i,]
 	number_rated_items <- sum(!is.na(scores))
@@ -13,6 +18,7 @@ for(i in 1:nrow(ratings_matrix)) {
 		small_matrix <- rbind(small_matrix, temp)
 	}
 }
+
 
 row.names(small_matrix) <- user_names
 
@@ -40,5 +46,8 @@ for (i in 1:nrow(small_matrix)) {
 		}
     }
 }
-  
+ 
+cosine_similarity_matrix
+
+write.csv(cosine_similarity_matrix, file = "outputs/_matrix.csv", row.names=TRUE)
   

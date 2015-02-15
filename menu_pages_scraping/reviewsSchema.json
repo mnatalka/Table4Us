@@ -1,0 +1,12 @@
+{"type": "array",
+"items": {
+	"type": "object",
+	"properties": {
+		"businessID": {"type":"string"},
+		"userID": {"type":"string"},
+		"stars": {"type":"string"},
+		"credibility": {"type":"string"},
+		"date": {"type":"string"},
+		"text": {"type":"string"},	
+	}}}
+	

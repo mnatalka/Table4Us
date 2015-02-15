@@ -1,0 +1,21 @@
+{"type": "array",
+"items": {
+	"type": "object",
+	"properties": {
+		"businessID":{"type":"string", "pattern":"Dub*" },
+		"name": {"type":"string"},
+		"address":{"type":"string"}, 
+		"city": {"type":"string"},
+		"rating": {"type":"integer",
+					"minimum":0, "maximum":5},
+		"review_count": {"type":"integer"},
+		"website": {"type":"string"},
+		"category": {
+			"type": "array",
+			"items": {
+				"type": "string"
+				}},
+		"latitude": {"type":"number"},
+		"longitude": {"type":"number"}}}}
+	
+
