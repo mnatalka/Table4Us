@@ -49,5 +49,5 @@ for (i in 1:nrow(small_matrix)) {
  
 cosine_similarity_matrix
 
-write.csv(cosine_similarity_matrix, file = "outputs/_matrix.csv", row.names=TRUE)
+write.csv(cosine_similarity_matrix, file = "outputs/cos_similarity_matrix.csv", row.names=TRUE)
   
