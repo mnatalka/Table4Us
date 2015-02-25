@@ -1,17 +1,23 @@
-# computing k-NN for K = 20
+#create list to hold lists of neighbours and they distances for each user
 
-#crate matrix to hold 20 nearest neighbours for each user if have them
-nearest_neighbours <- matrix(data=NA, nrow=nrow(ratings), ncol=5)
+create_neighbours_list <- function(file_name = "outputs/cos_similarity_matrix.csv") {
 
-
-for(i in 1:nrow(ratings)) {
-	#print(rownames(ratings)[i])
-	if(rownames(ratings)[i] %in% rownames(cosine_similarity_matrix) ){
-		temp <- cosine_similarity_matrix[row.names(ratings)[i],]
-		print(temp)
-		nearest_neighbours[i,] <- head(sort(temp, decreasing=TRUE), 5)
-	}
-
-
+	similarity_matrix <- read.csv(file_name, row.names=1)
+	similarity_matrix <- as.matrix(similarity_matrix,check.names=FALSE)
+	
+	neighbour_list <- list()
+	length(neighbour_list) <- nrow(similarity_matrix)
+		
+	users_names <- rownames(similarity_matrix)
+	names(neighbour_list) <- users_names
+	
+	for(i in names(neighbour_list)) {
+		user_sim <- similarity_matrix[i,]
+		names(user_sim)<-rownames(similarity_matrix)
+		good <- !is.na(user_sim)
+		user_sim <- user_sim[good]
+		neighbour_list[[i]] <- user_sim
+	}	
+     neighbour_list <- neighbour_list[sapply(neighbour_list, length) > 0]
 }
 
